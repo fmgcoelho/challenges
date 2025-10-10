@@ -5,7 +5,7 @@ use anyhow::{
     anyhow
 };
 
-use polars::{self, frame::DataFrame, io::SerReader, prelude::{col, full, CsvReadOptions, IntoLazy, PlSmallStr}};
+use polars::{self, frame::DataFrame, io::SerReader, prelude::{col, CsvReadOptions, IntoLazy, PlSmallStr}};
 use regex::Regex;
 
 fn split_column_names(df: &DataFrame) -> HashMap<String, (String,String)> {
@@ -81,6 +81,7 @@ pub fn grade_projects(source: &str, count: usize) -> Result<()> {
             let ns = n.to_string();
             !feedback_cols.contains(&ns) && !ident_cols.contains(&ns) && ns != "answer_id"})
         .map(|c| c.to_string()).collect();
-    println!("Grade cols: {:#?}", grade_cols);
+    // println!("Grade cols: {:#?}", grade_cols);
+    println!("A column {:#?}", df.column(&grade_cols[0]));
     Ok(())
 }
