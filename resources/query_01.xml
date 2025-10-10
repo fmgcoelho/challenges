@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FEEDBACK COMMENT="XML-Importfile for mod/feedback" VERSION="200701"><ITEMS><ITEM TYPE="info" REQUIRED="1"><ITEMID><![CDATA[1]]></ITEMID><ITEMTEXT><![CDATA[<p>Long text; information type &quot;Course&quot;; Position &quot;1&quot;; label: &quot;long-text-11&quot;</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[long-text-11]]></ITEMLABEL><PRESENTATION><![CDATA[2]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="info" REQUIRED="1"><ITEMID><![CDATA[2]]></ITEMID><ITEMTEXT><![CDATA[<p>Long text; information type &quot;Course category&quot;; Position &quot;1&quot;; label: &quot;long-text-11&quot;</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[long-text-12]]></ITEMLABEL><PRESENTATION><![CDATA[3]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textarea" REQUIRED="1"><ITEMID><![CDATA[3]]></ITEMID><ITEMTEXT><![CDATA[<p>Long text 02; Required : &quot;YES&quot;; Label: &quot;long-text-02&quot;; Width: &quot;30&quot;; Lines: &quot;5&quot;; Dependence: &quot;Choose&quot;; Position: &quot;2&quot;</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[long-text-02]]></ITEMLABEL><PRESENTATION><![CDATA[30|5]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="numeric" REQUIRED="1"><ITEMID><![CDATA[4]]></ITEMID><ITEMTEXT><![CDATA[<p>Numeric; Required: NO; label: &quot;numeric-01&quot;; Range from: &quot;3&quot;; Range to: &quot;13&quot;</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[numeric-01]]></ITEMLABEL><PRESENTATION><![CDATA[3|13]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textfield" REQUIRED="1"><ITEMID><![CDATA[5]]></ITEMID><ITEMTEXT><![CDATA[<p>type: Short text answer; Required: yes; label: &quot;shorttext-01&quot;: textfield width: 30; max characters: 255</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[shorttext-01]]></ITEMLABEL><PRESENTATION><![CDATA[30|255]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[6]]></ITEMID><ITEMTEXT><![CDATA[nothing]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h1>H1</h1><b>Bold</b>Text and media area,]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[7]]></ITEMID><ITEMTEXT><![CDATA[nothing]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h1>H1</h1>
+<p><strong>Bold</strong> Text and media area,</p>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[8]]></ITEMID><ITEMTEXT><![CDATA[<p>single answer; vertical; hide not-selected: no; omit empty submits: no: values:a.b.c.d.e</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[mcs-01]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>a</p>
+
+|<p>b</p>
+
+|<p>c</p>
+
+|<p>d</p>
+
+|<p>e</p>
+]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[9]]></ITEMID><ITEMTEXT><![CDATA[<p>single answer; vertical; hide not-selected: no; omit empty submits: no: values:a.b.c.d.e</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[mcs-01]]></ITEMLABEL><PRESENTATION><![CDATA[c>>>>><p>a</p>
+
+|<p>b</p>
+
+|<p>c</p>
+
+|<p>d</p>
+
+|<p>e</p>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM></ITEMS></FEEDBACK>

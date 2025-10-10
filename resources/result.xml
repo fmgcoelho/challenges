@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FEEDBACK COMMENT="XML-Importfile for mod/feedback" VERSION="200701"><ITEMS><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[1]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h1>C2: The Alien in the Desert</h1>
+<h2>Identification</h2>
+<blockquote>
+<p><strong>Please</strong> be carefull with student identification. <em>For example</em> <code>m12345</code>, not <code>12345</code> or <code>m12345@alunos.uevora.pt</code>.</p>
+</blockquote>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textfield" REQUIRED="1"><ITEMID><![CDATA[2]]></ITEMID><ITEMTEXT><![CDATA[<p>What is <strong>your</strong> student id (<em>eg</em> <code>m12345</code>)?</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[reviewer]]></ITEMLABEL><PRESENTATION><![CDATA[30|255]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textfield" REQUIRED="1"><ITEMID><![CDATA[3]]></ITEMID><ITEMTEXT><![CDATA[<p>What is the student id (<em>eg</em> <code>m12345</code>) of the <strong>author of this work</strong> ?</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[author]]></ITEMLABEL><PRESENTATION><![CDATA[30|255]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="pagebreak" REQUIRED="0"><ITEMID><![CDATA[4]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[5]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h2>Submission</h2>
+<p>The submitted resolution must meet some conditions. You must consider both the archive <strong>format</strong>, <strong>name</strong> and <strong>content</strong>.</p>
+<ol>
+<li>The archive <strong>format</strong> is <code>zip</code>.</li>
+<li>The <strong>name</strong> is like <code>CA-NNNNN.zip</code> where <code>A</code> is the <strong>challenge number</strong> (for example &quot;1&quot; or &quot;4&quot;) and <code>NNNNN</code> is the <strong>student Id</strong> (for example, <code>m14264</code> or <code>ex19683</code>). A properly formatted archive name would be, for example, <code>C1-m14264.zip</code>.</li>
+<li>The arquive <strong>content</strong> should be a folder with the <em>godot project</em> including <em>all the resources</em> needed to import, edit, and run the game in the godot editor; the <em>concept document</em>.</li>
+</ol>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[6]]></ITEMID><ITEMTEXT><![CDATA[<p>Is the submission <strong>archive format</strong> <code>zip</code>?</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[submission-format]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES.</p>
+
+|<p>NO.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[7]]></ITEMID><ITEMTEXT><![CDATA[<p>Is the submission <strong>file name</strong> correct (capitalization, spaces, challenge number, author id)?</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[submission-name]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES.</p>
+
+|<p>NO.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[8]]></ITEMID><ITEMTEXT><![CDATA[<p>Is the submission <strong>file contents</strong> correct (godot project folder; required resources; concept document [pdf])?</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[submission-content]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES.</p>
+
+|<p>NO.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="pagebreak" REQUIRED="0"><ITEMID><![CDATA[9]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[10]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h2>Challenge Specific</h2>
+<blockquote>
+<p>Consider the following questions, specific to this particular challenge.</p>
+</blockquote>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[11]]></ITEMID><ITEMTEXT><![CDATA[<p>This game features <strong>fog-of-war</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[challenge-feature]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[12]]></ITEMID><ITEMTEXT><![CDATA[<p>This game employs <strong>tiles</strong> similar to those used in games like  <em>Carcassone</em> or <em>Settlers of Catan</em>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[challenge-tiles]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[13]]></ITEMID><ITEMTEXT><![CDATA[<p>This game uses the name <strong>The Alien in the Desert</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[challenge-name]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[14]]></ITEMID><ITEMTEXT><![CDATA[<p>This game theme is &quot;<strong>Running out of space</strong>&quot;.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[challenge-theme]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[15]]></ITEMID><ITEMTEXT><![CDATA[<p>This game allows <strong>one to four</strong> players.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[challenge-numplayers]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[16]]></ITEMID><ITEMTEXT><![CDATA[<p>This game is <strong>beta quality</strong> (feature complete, no major bugs)?</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[challenge-quality]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textarea" REQUIRED="1"><ITEMID><![CDATA[17]]></ITEMID><ITEMTEXT><![CDATA[<h3>Challenge Specific Feedback</h3>
+<blockquote>
+<p>Give a short, directed, constructive feedback to the author (in English).</p>
+</blockquote>
+<p>Highlight the good points. Remark the bad points, and suggest ways to improve.</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[challenge-feedback]]></ITEMLABEL><PRESENTATION><![CDATA[40|5]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="pagebreak" REQUIRED="0"><ITEMID><![CDATA[18]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[19]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h2>Game Design</h2>
+<blockquote>
+<p>Play-test the game in order to answer these questions.</p>
+</blockquote>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[20]]></ITEMID><ITEMTEXT><![CDATA[<p>The game is <strong>fun to play</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-fun]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[21]]></ITEMID><ITEMTEXT><![CDATA[<p>The mechanics and dynamics keep the <strong>player motivated and engaged</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-replay]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[22]]></ITEMID><ITEMTEXT><![CDATA[<p>The player's <strong>goals are clear</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-goalclear]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[23]]></ITEMID><ITEMTEXT><![CDATA[<p>The are <strong>meaningful choices</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-meaningfulchoices]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[24]]></ITEMID><ITEMTEXT><![CDATA[<p>The game <strong>controls are easy to use</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-controlseasy]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[25]]></ITEMID><ITEMTEXT><![CDATA[<p>The game <strong>state is easy to understand</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-viewsclear]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[26]]></ITEMID><ITEMTEXT><![CDATA[<p>The <strong>assets match the theme</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-assetstheme]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[27]]></ITEMID><ITEMTEXT><![CDATA[<p>The <strong>game difficulty is adequate</strong> for the demographic target.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[design-difficultyadequate]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textarea" REQUIRED="1"><ITEMID><![CDATA[28]]></ITEMID><ITEMTEXT><![CDATA[<h3>Game Design Feedback</h3>
+<blockquote>
+<p>Give a short, directed, constructive feedback to the author (in English).</p>
+</blockquote>
+<p>Highlight the good points. Remark the bad points, and suggest ways to improve.</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[design-feedback]]></ITEMLABEL><PRESENTATION><![CDATA[40|5]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="pagebreak" REQUIRED="0"><ITEMID><![CDATA[29]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[30]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h2>Optional Game Features</h2>
+<blockquote>
+<p>Read the <em>Implementation Reference</em> section in the Concept Document.</p>
+</blockquote>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[31]]></ITEMID><ITEMTEXT><![CDATA[<p>There is a &quot;hard&quot; mode..</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[optional-hardmode]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[32]]></ITEMID><ITEMTEXT><![CDATA[<p>There is an &quot;easy&quot; mode..</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[optional-easymode]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[33]]></ITEMID><ITEMTEXT><![CDATA[<p>There is an &quot;against the clock&quot; mode.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[optional-againsttheclockmode]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[34]]></ITEMID><ITEMTEXT><![CDATA[<p>There are other optional game features.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[optional-otherfeatures]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textarea" REQUIRED="1"><ITEMID><![CDATA[35]]></ITEMID><ITEMTEXT><![CDATA[<h3>Optional Game Features Feedback</h3>
+<blockquote>
+<p>Give a short, directed, constructive feedback to the author (in English).</p>
+</blockquote>
+<p>Highlight the good points. Remark the bad points, and suggest ways to improve.</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[optional-feedback]]></ITEMLABEL><PRESENTATION><![CDATA[40|5]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="pagebreak" REQUIRED="0"><ITEMID><![CDATA[36]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[37]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h2>Concept Document</h2>
+<blockquote>
+<p>Read the Concept Document.</p>
+</blockquote>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[38]]></ITEMID><ITEMTEXT><![CDATA[<p>The Concept Document has a <strong>Pitch Line</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[conceptdocument-pitchline]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[39]]></ITEMID><ITEMTEXT><![CDATA[<p>The Concept Document has an <strong>Introductory Paragraph</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[conceptdocument-introparagraph]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[40]]></ITEMID><ITEMTEXT><![CDATA[<p>The Concept Document has a <strong>Demographic Breakdown</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[conceptdocument-demographicbreakdown]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[41]]></ITEMID><ITEMTEXT><![CDATA[<p>The Concept Document has a <strong>Bullet-List Feature-List</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[conceptdocument-featurelist]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[42]]></ITEMID><ITEMTEXT><![CDATA[<p>The Concept Document has a <strong>Feature-List Breakdown</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[conceptdocument-featurebreakdown]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[43]]></ITEMID><ITEMTEXT><![CDATA[<p>The Concept Document has a <strong>Formal Description</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[conceptdocument-formaldescription]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textarea" REQUIRED="1"><ITEMID><![CDATA[44]]></ITEMID><ITEMTEXT><![CDATA[<h3>Concept Document Feedback</h3>
+<blockquote>
+<p>Give a short, directed, constructive feedback to the author (in English).</p>
+</blockquote>
+<p>Highlight the good points. Remark the bad points, and suggest ways to improve.</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[conceptdocument-feedback]]></ITEMLABEL><PRESENTATION><![CDATA[40|5]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="pagebreak" REQUIRED="0"><ITEMID><![CDATA[45]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="label" REQUIRED="0"><ITEMID><![CDATA[46]]></ITEMID><ITEMTEXT><![CDATA[]]></ITEMTEXT><ITEMLABEL><![CDATA[]]></ITEMLABEL><PRESENTATION><![CDATA[<h2>Formal Description</h2>
+<blockquote>
+<p>Read the <em>Formal Description</em> section in the Concept Document.</p>
+</blockquote>
+]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[47]]></ITEMID><ITEMTEXT><![CDATA[<p>The Formal Description describes the <strong>Game State</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[formal-gamestate]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[48]]></ITEMID><ITEMTEXT><![CDATA[<p>The Formal Description describes the <strong>Game Setup</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[formal-gamesetup]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[49]]></ITEMID><ITEMTEXT><![CDATA[<p>The Formal Description describes the <strong>Player Actions</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[formal-playeractions]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[50]]></ITEMID><ITEMTEXT><![CDATA[<p>The Formal Description describes the <strong>Victory Conditions</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[formal-victoryconditions]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[51]]></ITEMID><ITEMTEXT><![CDATA[<p>The Formal Description describes the <strong>Progression of Play</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[formal-progressofplay]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="multichoice" REQUIRED="1"><ITEMID><![CDATA[52]]></ITEMID><ITEMTEXT><![CDATA[<p>The Formal Description describes the <strong>Game Views</strong>.</p>]]></ITEMTEXT><ITEMLABEL><![CDATA[formal-gameviews]]></ITEMLABEL><PRESENTATION><![CDATA[d>>>>><p>YES. <em>No errors</em>.</p>
+
+|<p>NO. <em>There are critical errors</em>.</p>
+
+|<p>PARTIAL. <em>Some errors, none critical</em>.</p>]]></PRESENTATION><OPTIONS><![CDATA[h]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM><ITEM TYPE="textarea" REQUIRED="1"><ITEMID><![CDATA[53]]></ITEMID><ITEMTEXT><![CDATA[<h3>Formal Description Feedback</h3>
+<blockquote>
+<p>Give a short, directed, constructive feedback to the author (in English).</p>
+</blockquote>
+<p>Highlight the good points. Remark the bad points, and suggest ways to improve.</p>
+]]></ITEMTEXT><ITEMLABEL><![CDATA[formal-feedback]]></ITEMLABEL><PRESENTATION><![CDATA[40|5]]></PRESENTATION><OPTIONS><![CDATA[]]></OPTIONS><DEPENDITEM><![CDATA[0]]></DEPENDITEM><DEPENDVALUE><![CDATA[]]></DEPENDVALUE></ITEM></ITEMS></FEEDBACK>
