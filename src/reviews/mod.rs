@@ -1,11 +1,14 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+use std::fmt::format;
 
 use anyhow::{
     Result,
     anyhow
 };
 
-use polars::{self, frame::DataFrame, io::SerReader, prelude::{col, CsvReadOptions, IntoLazy, PlSmallStr}};
+use polars::chunked_array::collect;
+use polars::{self, frame::DataFrame, io::SerReader};
+use polars::prelude::*;
 use regex::Regex;
 
 fn split_column_names(df: &DataFrame) -> HashMap<String, (String,String)> {
@@ -19,10 +22,97 @@ fn split_column_names(df: &DataFrame) -> HashMap<String, (String,String)> {
             let fulltext: String = caps["fulltext"].trim().to_string();
             result.insert(c.to_string(), (label.clone(), fulltext.clone()));
         } else {
-            println!("Fail capture{c:#?}");
+            println!("Fail capture in {c:#?}");
         }
     }
     result
+}
+
+fn score(s: &str) -> f32 {
+    if s.starts_with("YES") { 1.0 }
+    else if s.starts_with("NO") { 0.0 }
+    else { 0.5 }
+}
+
+
+fn str_to_score(str_val: &Column) -> Column {
+    str_val.str()
+        .unwrap()
+        .into_iter()
+        .map(|opt_name: Option<&str>| {
+            opt_name.map(|name: &str| score(name))
+         })
+        .collect::<Float32Chunked>()
+        .into_column()
+}
+
+pub fn process(df: &DataFrame, gradding_cols: &Vec<String>, _feedback_cols: &Vec<String>) -> Result<()> {
+
+    let mut mean_agg: Vec<Expr> = vec![];
+    for gc in gradding_cols {
+        let mean_expr = col(gc).mean().alias(format!("{gc}-authgrade"));
+        mean_agg.push(col(gc));
+        mean_agg.push(mean_expr);
+    }
+
+    let author_groups = df.clone().lazy()
+        .group_by([col("author")]);
+    let author_grades = author_groups
+        .agg(mean_agg).collect()?;
+    let author_grades = author_grades.drop_many(gradding_cols);
+    
+    let reviewers: HashSet<String> = df
+        .column("reviewer")?
+        .str()?
+        .into_iter()
+        .flatten()
+        .map(|s| s.to_string())
+        .collect();
+    
+    let authors: HashSet<String> = author_grades
+        .column("author")?
+        .str()?
+        .into_iter()
+        .flatten()
+        .map(|s| s.to_string())
+        .collect();
+
+
+    let result = df.clone().lazy();
+    for gc in gradding_cols.iter() {
+        result.with_column(lit(0.0).alias(format!("{gc}-revgrade")));
+    }
+    for author in authors.iter() {
+        let author_mask = author_grades.column("author")?.str()?.contains(author,true)?;
+        let grades = author_grades.filter(&author_mask)?;
+        for gc in gradding_cols.iter() {
+            let agrade = grades.column(&format!("{gc}-authgrade"))?.get(0)?;
+            let agrade:f32 = agrade.try_extract()?;
+            println!("Grade of question {gc:^30} for {author:>6}: {agrade:>4.2}");
+
+            for reviewer in reviewers.iter() {
+                // let ar_mask = ;
+                let ar_grade = df.clone().lazy()
+                    .filter(
+                    col("author").eq(lit(author.to_string()))
+                    .and(
+                        col("reviewer").eq(lit(reviewer.to_string()))
+                    ))
+                    .collect()?;
+                let ar_grade: Vec<f32> = ar_grade.column(gc)?
+                    .f32()?
+                    .into_no_null_iter()
+                    .collect::<Vec<_>>();
+                if !ar_grade.is_empty() {
+                    let ar_grade = ar_grade[0];
+
+                    let r_grade = 1.0 - (agrade - ar_grade).abs();
+                    println!("\tGrade by {reviewer:>6}: {ar_grade:>4.2};\tReviewer grade: {r_grade:>4.2}.");
+                }
+            }
+        }
+    }
+    Ok(())
 }
 
 pub fn grade_projects(source: &str, count: usize) -> Result<()> {
@@ -82,6 +172,14 @@ pub fn grade_projects(source: &str, count: usize) -> Result<()> {
             !feedback_cols.contains(&ns) && !ident_cols.contains(&ns) && ns != "answer_id"})
         .map(|c| c.to_string()).collect();
     // println!("Grade cols: {:#?}", grade_cols);
-    println!("A column {:#?}", df.column(&grade_cols[0]));
+    // println!("A column {:#?}", df.column(&grade_cols[0]));
+    //
+    // Score grade columns
+    //
+    for column in grade_cols.iter() {
+        df.apply(column, str_to_score)?;
+    }
+
+    process(&df, &grade_cols, &feedback_cols)?;
     Ok(())
 }
