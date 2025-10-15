@@ -1,32 +1,13 @@
 use std::collections::{HashMap, HashSet};
-use std::fmt::format;
+use std::{fs::File, io::Seek, sync::Arc};
 
-use anyhow::{
-    Result,
-    anyhow
-};
-
-use polars::chunked_array::collect;
-use polars::{self, frame::DataFrame, io::SerReader};
-use polars::prelude::*;
+use anyhow::Result;
+use anyhow::anyhow;
+use arrow::array::{Array, AsArray, RecordBatch, StringArray};
+use arrow::csv::reader::Format;
+use arrow::csv::ReaderBuilder;
+use arrow::datatypes::{DataType, Field, Schema};
 use regex::Regex;
-
-fn split_column_names(df: &DataFrame) -> HashMap<String, (String,String)> {
-    let cols = df.get_column_names();
-    let mut result = HashMap::<String,(String, String)>::new();
-    let re = Regex::new(r"\((?<label>[^\)]+)\)(?<fulltext>.+)").unwrap();
-
-    for c in cols.iter() {
-        if let Some(caps) = re.captures(c) {
-            let label = caps["label"].to_string();
-            let fulltext: String = caps["fulltext"].trim().to_string();
-            result.insert(c.to_string(), (label.clone(), fulltext.clone()));
-        } else {
-            println!("Fail capture in {c:#?}");
-        }
-    }
-    result
-}
 
 fn score(s: &str) -> f32 {
     if s.starts_with("YES") { 1.0 }
@@ -35,84 +16,95 @@ fn score(s: &str) -> f32 {
 }
 
 
-fn str_to_score(str_val: &Column) -> Column {
-    str_val.str()
-        .unwrap()
-        .into_iter()
-        .map(|opt_name: Option<&str>| {
-            opt_name.map(|name: &str| score(name))
-         })
-        .collect::<Float32Chunked>()
-        .into_column()
+// pub fn process(df: &DataFrame, gradding_cols: &Vec<String>, _feedback_cols: &Vec<String>) -> Result<()> {
+//     Ok(())
+// }
+
+fn column(batch: &RecordBatch, name: &str) -> Option<Arc<dyn Array>> {
+    batch.schema().column_with_name(name).map(|(index, _)| batch.column(index)).cloned()
 }
 
-pub fn process(df: &DataFrame, gradding_cols: &Vec<String>, _feedback_cols: &Vec<String>) -> Result<()> {
+fn rename_columns(batch: &RecordBatch) -> Result<(RecordBatch, HashMap<String, String>)> {
 
-    let mut mean_agg: Vec<Expr> = vec![];
-    for gc in gradding_cols {
-        let mean_expr = col(gc).mean().alias(format!("{gc}-authgrade"));
-        mean_agg.push(col(gc));
-        mean_agg.push(mean_expr);
-    }
-
-    let author_groups = df.clone().lazy()
-        .group_by([col("author")]);
-    let author_grades = author_groups
-        .agg(mean_agg).collect()?;
-    let author_grades = author_grades.drop_many(gradding_cols);
-    
-    let reviewers: HashSet<String> = df
-        .column("reviewer")?
-        .str()?
-        .into_iter()
-        .flatten()
-        .map(|s| s.to_string())
+    // 1. Split the original column names "(name)text" into (name, text)
+    let longname_re = Regex::new(r"^\((?<name>[^\)]+)\)(?<text>.*)$")?;
+    let spaces_re = Regex::new(r"(   +)")?;
+    let split_names: Vec<(String, String)> = batch
+        .schema()
+        .fields()
+        .iter()
+        .map(|field| {
+            if let Some(caps) = longname_re.captures(field.name()) {
+                (caps["name"].to_string(), spaces_re.replace_all(caps["text"].trim(), " -- ").to_string())
+            } else {
+                ("".to_string(), "".to_string())
+            } })
         .collect();
-    
-    let authors: HashSet<String> = author_grades
-        .column("author")?
-        .str()?
-        .into_iter()
-        .flatten()
-        .map(|s| s.to_string())
+    let new_names: Vec<String> = split_names.iter().map(|(a,_)| a.clone()).collect();
+    let split_names: HashMap<_, _> = split_names.iter().map(|(a,b)| (a.clone(), b.clone())).collect();
+
+    // 2. Create new fields with the new names
+    let new_fields: Vec<Field> = batch
+        .schema()
+        .fields()
+        .iter()
+        .zip(new_names.iter())
+        .map(|(field, name)| Field::new(
+            name, 
+            field.data_type().clone(), 
+            field.is_nullable()))
         .collect();
 
+    // 3. Create the new schema
+    let schema = Schema::new(new_fields);
 
-    let result = df.clone().lazy();
-    for gc in gradding_cols.iter() {
-        result.with_column(lit(0.0).alias(format!("{gc}-revgrade")));
+    // 4. Rebuild the RecordBatch
+    let new_batch = RecordBatch::try_new(
+        Arc::new(schema), 
+        batch.columns().to_vec())?;
+
+    Ok((new_batch, split_names))
+
+}
+
+fn grades2number(batch: &RecordBatch, gradding_cols: Vec<String>) -> Result<RecordBatch> {
+    let result: &mut RecordBatch = &mut batch.clone();
+    for gcol in gradding_cols {
+        let c0: StringArray = column(result, &gcol)
+            .unwrap()
+            .as_any()
+            .downcast_ref::<StringArray>()
+            .unwrap()
+            .clone();
+        let c1: Vec<f32> = c0
+            .iter()
+            .map(|s| score(s.unwrap_or("NO")) )
+            .collect();
+
+        let current_schema = result
+            .schema()
+            .fields()
+            .to_vec();
+        let gcol_index = result
+            .schema()
+            .column_with_name(&gcol)
+            .unwrap();
+        let next_schema:Vec<Arc<Field>> = result
+            .schema()
+            .fields()
+            .iter()
+            .map(|c| if *c.name() == gcol { 
+                Arc::new(Field::new(
+                    gcol.to_string(),
+                    DataType::Float32,
+                    false))} else {c.clone()})  
+            .collect();
+
+
+        println!("{c1:#?}");
     }
-    for author in authors.iter() {
-        let author_mask = author_grades.column("author")?.str()?.contains(author,true)?;
-        let grades = author_grades.filter(&author_mask)?;
-        for gc in gradding_cols.iter() {
-            let agrade = grades.column(&format!("{gc}-authgrade"))?.get(0)?;
-            let agrade:f32 = agrade.try_extract()?;
-            println!("Grade of question {gc:^30} for {author:>6}: {agrade:>4.2}");
 
-            for reviewer in reviewers.iter() {
-                // let ar_mask = ;
-                let ar_grade = df.clone().lazy()
-                    .filter(
-                    col("author").eq(lit(author.to_string()))
-                    .and(
-                        col("reviewer").eq(lit(reviewer.to_string()))
-                    ))
-                    .collect()?;
-                let ar_grade: Vec<f32> = ar_grade.column(gc)?
-                    .f32()?
-                    .into_no_null_iter()
-                    .collect::<Vec<_>>();
-                if !ar_grade.is_empty() {
-                    let ar_grade = ar_grade[0];
-
-                    let r_grade = 1.0 - (agrade - ar_grade).abs();
-                    println!("\tGrade by {reviewer:>6}: {ar_grade:>4.2};\tReviewer grade: {r_grade:>4.2}.");
-                }
-            }
-        }
-    }
-    Ok(())
+    Err(anyhow!(""))
 }
 
 pub fn grade_projects(source: &str, count: usize) -> Result<()> {
@@ -121,65 +113,65 @@ pub fn grade_projects(source: &str, count: usize) -> Result<()> {
     //
     //  Load CSV file into a DataFrame
     //
-    let mut df = CsvReadOptions::default()
-    .try_into_reader_with_file_path(Some(source.into()))?
-    .finish()?;
-    //
-    //  Normalize -by label- the columns names; keep the original text
-    //
-    let cols_info = split_column_names(&df);
-    // Rename (normalize) the column names to column label
-    let dfc = df.clone();
-    let column_names = dfc.get_column_names();
-    for c in column_names {
-        if let Some((n, _)) = cols_info.get(c.as_str()) {
-            df.rename(c, PlSmallStr::from_str(n))?;
-        } else {
-            return Err(anyhow!("Failed normalizing column name: \"{c}\"."));
-        }
-    }
-    //
-    //  Fill missing values
-    //
-    let column_names = df.get_column_names_str();
-    for c in column_names {
-        df.clone().lazy()
-            .with_column(col(c).fill_null(0.0))
-            .collect()?;
-    }
-    //
-    //  All columns
-    //
-    let all_columns = df.get_column_names();
-    //
-    //  Feedback columns
-    //
-    let feedback_cols:Vec<String> = all_columns.iter()
-        .filter(|n| n.contains("feedback"))
-        .map(|c| c.to_string()).collect();
-    //
-    //  Ident columns
-    //
-    let ident_cols:Vec<String> = vec![ 
-        "reviewer".to_string(),        
-        "author".to_string(), ];
-    //
-    //  Grade columns
-    //
-    let grade_cols:Vec<String> = all_columns.iter()
-        .filter(|n| {
-            let ns = n.to_string();
-            !feedback_cols.contains(&ns) && !ident_cols.contains(&ns) && ns != "answer_id"})
-        .map(|c| c.to_string()).collect();
-    // println!("Grade cols: {:#?}", grade_cols);
-    // println!("A column {:#?}", df.column(&grade_cols[0]));
-    //
-    // Score grade columns
-    //
-    for column in grade_cols.iter() {
-        df.apply(column, str_to_score)?;
-    }
+    let mut file = File::open(source)?;
+    let format = Format::default().with_header(true);
+    let (schema, _) = format.infer_schema(&mut file, Some(5))?;
+    file.rewind()?;
 
-    process(&df, &grade_cols, &feedback_cols)?;
+    let builder = ReaderBuilder::new(Arc::new(schema)).with_format(format);
+    let mut csv = builder.build(file)?;
+    let batch = csv.next().unwrap()?; // A RecordBatch, in arrow language
+
+    //
+    //  Normalize columns names; keep the old text in `cols { name : text }`
+    //
+    let (batch, cols) = rename_columns(&batch)?;
+
+    //
+    //  Define columns with:
+    //      - identities: `(author, reviewer)`
+    //      - feedback: `*feedback`
+    //      - gradding: otherwise
+    //
+    let id_cols = ["author".to_string(), "reviewer".to_string()];
+    let feedback_cols: Vec<String> = cols
+        .keys()
+        .filter(|c| 
+            c.ends_with("feedback"))
+        .cloned()
+        .collect();
+    let gradding_cols: Vec<String> = cols
+        .keys()
+        .filter(|c|
+            !id_cols.contains(c) && !feedback_cols.contains(c))
+        .cloned()
+        .collect();
+    //
+    //  Lists of `authors` and `reviewers`
+    //
+    let authors: HashSet<String> = column(&batch, "author")
+        .unwrap()
+        .as_any()
+        .downcast_ref::<StringArray>()
+        .unwrap()
+        .iter()
+        .flatten()
+        .map(|s| s.to_string())
+        .collect::<HashSet<String>>();
+
+    let reviewers: HashSet<String> = column(&batch, "reviewer")
+        .unwrap()
+        .as_any()
+        .downcast_ref::<StringArray>()
+        .unwrap()
+        .iter()
+        .flatten()
+        .map(|s| s.to_string())
+        .collect::<HashSet<String>>();
+
+    grades2number(&batch, gradding_cols);
+
+    // println!("Authors: {:#?}\n\nReviewers: {:#?}", authors, reviewers);
+    // println!("COLS: {cols:#?}");
     Ok(())
 }
