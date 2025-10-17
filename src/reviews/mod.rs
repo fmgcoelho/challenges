@@ -1,19 +1,18 @@
-use std::any::{Any, TypeId};
 use std::collections::{HashMap, HashSet};
-use std::fmt::format;
 use std::fs::{remove_file, File};
 use std::io::{BufReader, Write};
 use std::path::PathBuf;
+use std::process::Command;
 
 use anyhow::{Result, anyhow};
 
 use convert_case::{Case, Casing};
-use handlebars::{Context, Handlebars, Helper, HelperResult, Output, Path, RenderContext};
-use polars::chunked_array::collect;
+use handlebars::{Context, Handlebars, Helper, HelperResult, Output, RenderContext};
 use polars::prelude::*;
 use polars::{self, frame::DataFrame, io::SerReader};
 use regex::Regex;
 use serde_json::{Value, from_reader, json};
+
 
 fn split_column_names(df: &DataFrame) -> HashMap<String, (usize, String, String)> {
     let cols = df.get_column_names();
@@ -245,7 +244,7 @@ pub fn process(
     let feedback_aggr: Vec<Expr> = feedback_cols
         .iter()
         // .flat_map(|c| [col(c), col(c).sum().alias(format!("{c}-all"))])
-        .map(|c| col(c))
+        .map(col)
         .collect();
     let feedback = feedback
         .clone()
@@ -268,21 +267,18 @@ pub fn process(
     Ok(result)
 }
 
-const REPORT_HEAD: &str = r#"## Student {{student}}
+const REPORT_HEAD: &str = r#"## Grades
 
 | _Author_ | _Reviewer_ | **Total** |
-|:--------:|:----------:|:---------:|
+|---------:|-----------:|----------:|
 | {{pct autgrade}} | {{pct revgrade}} | {{pct totgrade}} |
 
-### Questions
+### Detailed
 
+| Question | _Author_ | _Reviewer_ |
+|:---------|---------:|-----------:|
 {{#each questions}}
-#### {{this.questiontext}}
-
-| _Author_ | _Reviewer_ |
-|:--------:|:----------:|
-| {{pct this.autgrade}} | {{pct this.revgrade}} |
-
+| {{{this.questiontext}}} | {{pct this.autgrade}} | {{pct this.revgrade}} |
 {{/each}}
 
 ### Feedback
@@ -291,8 +287,7 @@ const REPORT_HEAD: &str = r#"## Student {{student}}
 #### {{this.questiontext}}
 
 {{#each this.comments}}
-
-{{this}}
+{{{this}}}
 
 ----
 
@@ -306,7 +301,7 @@ fn pct_helper(
     h: &Helper,
     _: &Handlebars,
     _: &Context,
-    rc: &mut RenderContext,
+    _rc: &mut RenderContext,
     out: &mut dyn Output,
 ) -> HelperResult {
     let param = h.param(0).unwrap().value().as_f64().unwrap_or_default();
@@ -318,7 +313,7 @@ fn pct_helper(
 
 fn report(grades: &mut DataFrame, cinfo: &HashMap<usize, (String, String)>) -> Result<HashMap<String, String>> {
     let mut hb = Handlebars::new();
-    hb.register_template_string("report", REPORT_HEAD).unwrap();
+    hb.register_template_string("report", REPORT_HEAD)?;
     hb.register_helper("pct", Box::new(pct_helper));
 
     let mut file = File::create("temp.json")?;
@@ -341,8 +336,8 @@ fn report(grades: &mut DataFrame, cinfo: &HashMap<usize, (String, String)>) -> R
                 let mut qs: Vec<_> = vec![];
                 let mut fbs: Vec<_> = vec![];
 
-                for i in cinfo.keys() {
-                    let (qlabel, qtext) = cinfo.get(i).unwrap();
+                for i in 0..cinfo.len() {
+                    let (qlabel, qtext) = cinfo.get(&i).unwrap();
                     if qlabel.ends_with("-feedback") {
                         let title = qlabel.replace("-", " ").to_case(Case::Title);
                         let d = HashMap::from([
@@ -480,16 +475,59 @@ pub fn grade_projects(source: &str, count: usize) -> Result<()> {
 
     let path = std::path::Path::new(source);
     let parent = path.parent().unwrap_or(std::path::Path::new("."));
+    let mut collected_reports = Vec::<String>::new();
     for (student_id, report) in reports_md.iter() {
-        let mut path_buf = PathBuf::new(); 
-        path_buf.push(parent);
-        path_buf.push(student_id);
-        path_buf.set_extension("md");
+        let mut path_md = PathBuf::new(); 
+        path_md.push(parent);
+        path_md.push(student_id);
+        path_md.set_extension("md");
 
-        let mut file = File::create(path_buf)?;
+        let mut file = File::create(&path_md)?;
         file.write_all(report.as_bytes())?;
 
+        /*
+        pandoc {{basename}}.md -f gfm -t html5 --standalone --metadata title=\"Challenge Results\" -o ${{basename}}.html
+         */
+        let path_html = path_md.with_extension("html");
+        let _ = Command::new("pandoc")
+            .args([
+                "-f", "gfm", 
+                "-t", "html5", 
+                "--standalone", 
+                "--metadata", &format!("title={student_id} Results"),
+                "-o", path_html.to_str().unwrap(),
+                path_md.to_str().unwrap()])
+            .output()?;
+        collected_reports.push(student_id.to_string());
     }
+
+    let index = r#"# Reports
+
+| Student |
+|:-------:|
+{{#each this}}
+| [{{this}}]({{this}}.html) |
+{{/each}}
+    "#;
+    let mut hb = handlebars::Handlebars::new();
+    hb.register_template_string("index", index)?;
+    let mut pb = PathBuf::new();
+    pb.push(parent);
+    pb.push("index");
+    pb.with_extension("md");
+    let mut file = File::create(&pb)?;
+    let index_md = hb.render("index", &collected_reports)?;
+    file.write_all(index_md.as_bytes())?;
+    let _ = Command::new("pandoc")
+        .args([
+            "-f", "gfm", 
+            "-t", "html5", 
+            "--standalone", 
+            "--metadata", "title=Challenge Results",
+            "-o", pb.with_extension("html").to_str().unwrap(),
+            pb.to_str().unwrap()])
+        .output()?;
+
     println!("OK");
     Ok(())
 }
