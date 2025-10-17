@@ -13,6 +13,15 @@ use polars::{self, frame::DataFrame, io::SerReader};
 use regex::Regex;
 use serde_json::{Value, from_reader, json};
 
+enum ReviewPart {
+    Feedback()
+}
+struct Review {
+    answer_id: usize,
+    reviewer: String,
+    author: String,
+    raw_reviews:  
+}
 
 fn split_column_names(df: &DataFrame) -> HashMap<String, (usize, String, String)> {
     let cols = df.get_column_names();
