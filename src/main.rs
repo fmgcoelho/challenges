@@ -108,10 +108,19 @@ fn pick_reviews(file_path: &str, num_reviews: usize) -> Result<String> {
     // LINE
     reviews.push((0..(num_reviews_ok + 1)).map(|_| "-".to_string()).collect());
     // POPULATE
-    for i in 1..authors_count {
-        let targets = authors[i..(i + num_reviews_ok)].to_vec();
+    for i in 0..authors_count {
+        let targets = authors[(i + 1)..(i + 1 + num_reviews_ok)].to_vec();
+        print!(
+            "i={:3} s={:3} e={:3} {} {:?} ",
+            i,
+            i + 1,
+            i + 1 + num_reviews_ok,
+            authors[i],
+            targets
+        );
         let mut line = vec![authors[i].clone()];
         line.extend_from_slice(&targets);
+        println!("{line:?}");
         reviews.push(line);
     }
 
