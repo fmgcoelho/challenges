@@ -9,9 +9,16 @@ use anyhow::anyhow;
 use clap::Parser;
 use clap::ValueEnum;
 use csv::Reader;
+use log::info;
+use log::trace;
+use log::kv;
+use log::LevelFilter;
 use rand::seq::IndexedRandom;
 use rand::seq::SliceRandom;
 use serde::Deserialize;
+use simplelog::CombinedLogger;
+use simplelog::Config;
+use simplelog::WriteLogger;
 
 mod moodle_feedback;
 mod reviews;
@@ -139,10 +146,17 @@ fn pick_reviews(file_path: &str, num_reviews: usize) -> Result<String> {
 }
 
 fn main() -> Result<()> {
+    CombinedLogger::init(vec![
+        WriteLogger::new(LevelFilter::Trace, Config::default(), File::create("challenges.log").unwrap())
+    ])?;
+    trace!("Started.");
+    
     let args = Args::parse();
 
+    trace!("Got arguments.");
     match &args.task {
         Task::PickTheme => {
+            trace!("Task: PickTheme.");
             if let Some(source) = args.source {
                 match pick_theme(&source) {
                     Ok(result) => println!("Theme: {result}"),
@@ -153,6 +167,7 @@ fn main() -> Result<()> {
             }
         }
         Task::RenderReviewerForm => {
+            trace!("Task: RenderReviewerForm.");
             if let Some(source) = args.source {
                 match yaml2xml(&source) {
                     Ok(result) => {
@@ -170,6 +185,7 @@ fn main() -> Result<()> {
             }
         }
         Task::PickReviews => {
+            trace!("Task: PickReviews.");
             if let Some(source) = args.source {
                 let num_reviews: usize = args.count.unwrap_or(3);
                 match pick_reviews(&source, num_reviews) {
@@ -181,6 +197,7 @@ fn main() -> Result<()> {
             }
         }
         Task::GradeReviews => {
+            trace!("Task: GradeReviews.");
             if let Some(source) = args.source {
                 let title: String = args.title.unwrap_or("".to_string());
                 let num_reviews: usize = args.count.unwrap_or(3);
