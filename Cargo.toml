@@ -2,6 +2,9 @@
 name = "challenges"
 version = "0.2.1"
 edition = "2024"
+license = "Some license"
+description = "The description"
+documentation = "The Documentation"
 
 [dependencies]
 anyhow = "1.0.100"
