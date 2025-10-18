@@ -32,6 +32,10 @@ struct Args {
     /// For tasks that require a number.
     #[arg(short, long)]
     count: Option<usize>,
+
+    /// For tasks that require a title.
+    #[arg(short, long)]
+    title: Option<String>,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
@@ -178,8 +182,9 @@ fn main() -> Result<()> {
         }
         Task::GradeReviews => {
             if let Some(source) = args.source {
+                let title: String = args.title.unwrap_or("".to_string());
                 let num_reviews: usize = args.count.unwrap_or(3);
-                match grade_projects(&source, num_reviews) {
+                match grade_projects(&source, &title, num_reviews) {
                     Ok(()) => {}
                     Err(e) => return Err(anyhow!("Can't grade_projects in {source}: {e}.")),
                 }
