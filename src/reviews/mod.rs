@@ -7,6 +7,7 @@ use csv::StringRecord;
 
 use handlebars::{Context, Handlebars, Helper, HelperResult, Output, RenderContext};
 
+use log::{debug, error, trace};
 use serde_json::json;
 
 fn score_ynm(ynm: &str) -> f32 {
@@ -187,13 +188,16 @@ impl Grades {
     }
 
     fn grade_reviewers(&self, reviews: &Reviews, qinfo: &QuestionsInfo, count: usize)  -> Result<Grades> {
+        trace!("Start grade_reviews.");
         let mut grades: Vec<Grade> = vec![];
         for reviewer in self.students() {
+            debug!("Gradding reviewer: {reviewer:?}.");
             // Initialize reviewer grades to 0.0
             let mut reviewer_grade = self.grade_of(&reviewer).unwrap();
             for (label,_) in qinfo.0.values() {
                 reviewer_grade.reviewer_grades.insert(label.to_owned(), 0.0);
             }
+            debug!("Reviewer initial grade: {reviewer_grade:#?}.");
             // println!("Current grade of {reviewer}:\n\t{:#?}.", reviewer_grade);
             for review in reviews.reviews_by(&reviewer) { // A review made by the reviewer
                 let author = &review.author;
@@ -214,11 +218,14 @@ impl Grades {
                         );
                     }
                 } else {
-                    return Err(anyhow!("Author {author} has no grade."))
+                    let err = anyhow!("Author {author} has no grade.");
+                    error!("{err:?}");
+                    return Err(err)
                 }
             }
             grades.push(reviewer_grade);
         }
+        trace!("End grade_reviews.");
         Ok(Grades(grades))
     }
 }

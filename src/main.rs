@@ -9,8 +9,8 @@ use anyhow::anyhow;
 use clap::Parser;
 use clap::ValueEnum;
 use csv::Reader;
-use log::trace;
 use log::LevelFilter;
+use log::trace;
 use rand::seq::IndexedRandom;
 use rand::seq::SliceRandom;
 use serde::Deserialize;
@@ -46,13 +46,13 @@ struct Args {
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 enum Task {
     /// Randomly choose a (game) theme from a <source> file.
-    PickTheme,
+    GT,
     /// Render a (Moodle's) Feedback XML from a <source> YAML file.
-    RenderReviewerForm,
-    /// Match <count> reviews for each student in <source> (CSV).
-    PickReviews,
-    /// Computes the AUTHOR and REVIEWER grades from <source>; Then renders a report in both markdown and html.
-    GradeReviews,
+    RMF,
+    /// Create <count> reviews for each student in <source> (CSV).
+    CR,
+    /// Grade the AUTHOR and REVIEWER values from <source>; Then renders a report in both markdown and html.
+    GR,
 }
 
 fn pick_theme(file_path: &str) -> Result<String> {
@@ -144,16 +144,18 @@ fn pick_reviews(file_path: &str, num_reviews: usize) -> Result<String> {
 }
 
 fn main() -> Result<()> {
-    CombinedLogger::init(vec![
-        WriteLogger::new(LevelFilter::Trace, Config::default(), File::create("challenges.log").unwrap())
-    ])?;
+    CombinedLogger::init(vec![WriteLogger::new(
+        LevelFilter::Trace,
+        Config::default(),
+        File::create("challenges.log").unwrap(),
+    )])?;
     trace!("Started.");
-    
+
     let args = Args::parse();
 
     trace!("Got arguments.");
     match &args.task {
-        Task::PickTheme => {
+        Task::GT => {
             trace!("Task: PickTheme.");
             if let Some(source) = args.source {
                 match pick_theme(&source) {
@@ -164,7 +166,7 @@ fn main() -> Result<()> {
                 return Err(anyhow!("Missing theme source."));
             }
         }
-        Task::RenderReviewerForm => {
+        Task::RMF => {
             trace!("Task: RenderReviewerForm.");
             if let Some(source) = args.source {
                 match yaml2xml(&source) {
@@ -182,7 +184,7 @@ fn main() -> Result<()> {
                 return Err(anyhow!("Missing YAML source."));
             }
         }
-        Task::PickReviews => {
+        Task::CR => {
             trace!("Task: PickReviews.");
             if let Some(source) = args.source {
                 let num_reviews: usize = args.count.unwrap_or(3);
@@ -194,7 +196,7 @@ fn main() -> Result<()> {
                 return Err(anyhow!("Missing reviewers source."));
             }
         }
-        Task::GradeReviews => {
+        Task::GR => {
             trace!("Task: GradeReviews.");
             if let Some(source) = args.source {
                 let title: String = args.title.unwrap_or("".to_string());
