@@ -83,25 +83,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 
 [[package]]
-name = "challenges"
-version = "0.2.3"
-dependencies = [
- "anyhow",
- "clap",
- "convert_case",
- "csv",
- "handlebars",
- "log",
- "markdown",
- "rand",
- "regex",
- "serde",
- "serde_json",
- "serde_yaml_ng",
- "simplelog",
-]
-
-[[package]]
 name = "clap"
 version = "4.5.49"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -279,6 +260,25 @@ checksum = "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292"
 dependencies = [
  "block-buffer",
  "crypto-common",
+]
+
+[[package]]
+name = "djops"
+version = "0.2.4"
+dependencies = [
+ "anyhow",
+ "clap",
+ "convert_case",
+ "csv",
+ "handlebars",
+ "log",
+ "markdown",
+ "rand",
+ "regex",
+ "serde",
+ "serde_json",
+ "serde_yaml_ng",
+ "simplelog",
 ]
 
 [[package]]
