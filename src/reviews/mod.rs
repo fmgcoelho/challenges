@@ -73,9 +73,9 @@ fn pct(
 const GRADE_REPORT: &str = r#"
 # Report for student {{student}}
 
-| _Total_ | Author |  Reviewer |
-|--------:|-------:|----------:|
-|{{pct totgrade}}|{{pct autgrade}}|{{pct revgrade}}|
+| _Total_ | Author |  Reviewer Final | | Feedback Weight | Reviewer Initial |
+|--------:|-------:|----------------:|-|-----------------|------------------|
+|{{pct totgrade}}|{{pct autgrade}}|  | |                 | {{pct revgrade}} |
 
 ## Detail
 
@@ -223,7 +223,7 @@ impl Grades {
         trace!("Start grade_reviews.");
         let mut grades: Vec<Grade> = vec![];
         for reviewer in self.students() {
-            debug!("Gradding reviewer: {reviewer:?}.");
+            debug!("Grading reviewer: {reviewer:?}.");
             // Initialize reviewer grades to 0.0
             let mut reviewer_grade = self.grade_of(&reviewer).unwrap();
             for (label, _) in qinfo.0.values() {

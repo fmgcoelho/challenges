@@ -46,13 +46,13 @@ struct Args {
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 enum Task {
     /// Randomly choose a (game) theme from a <source> file.
-    GT,
+    Theme,
     /// Render a (Moodle's) Feedback XML from a <source> YAML file.
-    RMF,
-    /// Create <count> reviews for each student in <source> (CSV).
-    CR,
+    Form,
+    /// Match <count> reviews for each student in <source> (CSV).
+    Match,
     /// Grade the AUTHOR and REVIEWER values from <source>; Then renders a report in both markdown and html.
-    GR,
+    Grade,
 }
 
 fn pick_theme(file_path: &str) -> Result<String> {
@@ -155,7 +155,7 @@ fn main() -> Result<()> {
 
     trace!("Got arguments.");
     match &args.task {
-        Task::GT => {
+        Task::Theme => {
             trace!("Task: PickTheme.");
             if let Some(source) = args.source {
                 match pick_theme(&source) {
@@ -166,7 +166,7 @@ fn main() -> Result<()> {
                 return Err(anyhow!("Missing theme source."));
             }
         }
-        Task::RMF => {
+        Task::Form => {
             trace!("Task: RenderReviewerForm.");
             if let Some(source) = args.source {
                 match yaml2xml(&source) {
@@ -184,8 +184,8 @@ fn main() -> Result<()> {
                 return Err(anyhow!("Missing YAML source."));
             }
         }
-        Task::CR => {
-            trace!("Task: PickReviews.");
+        Task::Match => {
+            trace!("Task: Match Reviews and Authors.");
             if let Some(source) = args.source {
                 let num_reviews: usize = args.count.unwrap_or(3);
                 match pick_reviews(&source, num_reviews) {
@@ -196,8 +196,8 @@ fn main() -> Result<()> {
                 return Err(anyhow!("Missing reviewers source."));
             }
         }
-        Task::GR => {
-            trace!("Task: GradeReviews.");
+        Task::Grade => {
+            trace!("Task: Grade.");
             if let Some(source) = args.source {
                 let title: String = args.title.unwrap_or("".to_string());
                 let num_reviews: usize = args.count.unwrap_or(3);
