@@ -75,7 +75,7 @@ const GRADE_REPORT: &str = r#"
 
 | _Total_ | Author |  Reviewer Final | | Feedback Weight | Reviewer Initial |
 |--------:|-------:|----------------:|-|-----------------|------------------|
-|{{pct totgrade}}|{{pct autgrade}}|  | |                 | {{pct revgrade}} |
+|{{pct totgrade}}|{{pct autgrade}}|{{pct revfinal}}||{{pct fbweight}} | {{pct revgrade}} |
 
 ## Detail
 
@@ -104,6 +104,7 @@ struct Grade {
     author_grades: HashMap<String, f32>,
     reviewer_grades: HashMap<String, f32>,
     feedbacks: HashMap<String, Vec<String>>,
+    feedbacks_weight: f32,
 }
 
 impl Grade {
@@ -143,10 +144,14 @@ impl Grade {
                 }))
             }
         }
+        let fbweight = self.feedbacks_weight;
+        let revfinal = fbweight * revgrade;
         let v = json!({
             "student": self.student,
-            "totgrade": 0.5 *(autgrade + revgrade),
+            "totgrade": 0.5 * (autgrade + revfinal),
             "autgrade": autgrade,
+            "revfinal": revfinal,
+            "fbweight": fbweight,
             "revgrade": revgrade,
             "questions": questions,
             "feedbacks": feedbacks
@@ -296,33 +301,17 @@ impl Reviews {
             .collect()
     }
 
-    // fn reviewers(&self) -> HashSet<String> {
-    //     self.0.iter().map(|r| r.reviewer.clone()).collect()
-    // }
-
-    // fn reviewers_of(&self, author: &str) -> Vec<String> {
-    //     self.0.iter().filter(|r| r.author == author).map(|r| r.reviewer.clone()).collect()
-    // }
-
-    // fn authors_of(&self, reviewer: &str) -> Vec<String> {
-    //     self.0.iter().filter(|r| r.reviewer == reviewer).map(|r| r.author.clone()).collect()
-    // }
-
-    // fn grade(&self, reviewer: &str, author: &str, label: &str) -> Option<f32> {
-    //     self.0.iter()
-    //         .filter(|r| r.reviewer == reviewer && r.author == author && r.grades.contains_key(label))
-    //         .map(|r| r.grades[label])
-    //         .collect::<Vec<f32>>()
-    //         .get(0)
-    //         .copied()
-    // }
-
-    fn grade_authors(&self) -> Result<Grades> {
+    fn grade_authors(&self, fbweights: &HashMap<String, f32>) -> Result<Grades> {
         let mut gs = vec![];
         for author in self.authors() {
             let mut g = Grade {
                 student: author.clone(),
                 ..Default::default()
+            };
+            g.feedbacks_weight = if let Some(author_weight) = fbweights.get(&author) {
+                author_weight.clone()
+            } else {
+                0.0f32
             };
 
             // grades: label: [g1, g2, ... ]
@@ -360,11 +349,16 @@ impl Reviews {
         Ok(Grades(gs))
     }
 
-    fn grades(&self, qinfo: &QuestionsInfo, count: usize) -> Result<Grades> {
+    fn grades(
+        &self,
+        qinfo: &QuestionsInfo,
+        fbweights: &HashMap<String, f32>,
+        count: usize,
+    ) -> Result<Grades> {
         // Two steps:
         // 1. Reviews -> Grades (authors only)
         // 2. Grades (authors only) + Reviews -> Grades authors+reviewers
-        let grades = self.grade_authors()?;
+        let grades = self.grade_authors(&fbweights)?;
         grades.grade_reviewers(self, qinfo, count)
     }
 }
@@ -388,6 +382,7 @@ fn normalize_headers(headers: &StringRecord) -> Result<QuestionsInfo> {
 // id       columns: reviewer, author
 // feedback columns: *feedback
 // grading  columns: all the others
+
 fn load_reviews(source: &str) -> Result<(QuestionsInfo, Reviews)> {
     let mut reader = csv::Reader::from_path(source)?;
 
@@ -428,10 +423,47 @@ fn load_reviews(source: &str) -> Result<(QuestionsInfo, Reviews)> {
     Ok((hd_info, Reviews(reviews)))
 }
 
-pub fn grade_projects(source: &str, title: &str, count: usize) -> Result<()> {
-    let (qinfo, reviews) = load_reviews(source)?;
+fn load_feedbackweights(source: &str) -> Result<HashMap<String, f32>> {
+    let mut reader = csv::Reader::from_path(source)?;
+    let headers = reader.headers()?;
 
-    let grades = reviews.grades(&qinfo, count)?;
+    // Find feedback columns (columns that end with "-feedback")
+    let mut feedback_columns = Vec::new();
+    for (i, header) in headers.iter().enumerate() {
+        if i > 0 && header.ends_with("-feedback") {
+            // Skip first column (reviewer)
+            feedback_columns.push((i, header.to_string()));
+        }
+    }
+    let num_cols: f32 = feedback_columns.len() as f32;
+
+    let mut weights = HashMap::new();
+
+    for record_result in reader.records() {
+        let record = record_result?;
+        let reviewer = record.get(0).unwrap().to_string(); // First column is reviewer
+
+        let mut reviewer_weight = 0.0f32;
+
+        for (col_idx, _) in &feedback_columns {
+            if let Ok(value) = record.get(*col_idx).unwrap().trim().parse::<f32>() {
+                // Ensure the value is in [0, 1] range
+                let clamped_value = value.clamp(0.0, 1.0);
+                reviewer_weight += clamped_value;
+            }
+        }
+
+        weights.insert(reviewer, reviewer_weight / num_cols);
+    }
+
+    Ok(weights)
+}
+
+pub fn grade_projects(source: &str, fbw_source: &str, title: &str, count: usize) -> Result<()> {
+    let (qinfo, reviews) = load_reviews(source)?;
+    let fb_weights = load_feedbackweights(fbw_source)?;
+
+    let grades = reviews.grades(&qinfo, &fb_weights, count)?;
 
     let cwd = if let Some(p) = Path::new(source).parent() {
         p

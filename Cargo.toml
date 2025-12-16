@@ -1,6 +1,6 @@
 [package]
 name = "djops"
-version = "0.2.5"
+version = "0.3.0"
 edition = "2024"
 license = "Some license"
 description = "The description"

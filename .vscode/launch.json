@@ -1,13 +1,18 @@
 {
-    "configurations": [
+  "configurations": [
     {
-        "type": "lldb",
-        "request": "launch",
-        "name": "Launch",
-        "program": "${workspaceFolder}/target/debug/challenges",
-        "args": ["grade-reviews",
-        "-s resources/reviews.csv"],
-        "cwd": "${workspaceFolder}"
+      "type": "lldb",
+      "request": "launch",
+      "name": "Launch",
+      "program": "${workspaceFolder}/target/debug/djops",
+      "args": [
+        "grade",
+        "-s",
+        "resources/reviews.csv",
+        "-f",
+        "resources/fbweights.csv"
+      ],
+      "cwd": "${workspaceFolder}"
     }
-    ]
+  ]
 }
